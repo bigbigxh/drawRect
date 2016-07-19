@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		81DEF0BB1D3DB792005EE2E2 /* InputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81DEF0BA1D3DB792005EE2E2 /* InputView.m */; };
 		81DEF0BD1D3DB7A0005EE2E2 /* InputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81DEF0BC1D3DB7A0005EE2E2 /* InputView.xib */; };
+		81DEF0C31D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 81DEF0C21D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.m */; };
 		81E5B3E31D3CD0C500A7BC7A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E5B3E21D3CD0C500A7BC7A /* main.m */; };
 		81E5B3E61D3CD0C500A7BC7A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E5B3E51D3CD0C500A7BC7A /* AppDelegate.m */; };
 		81E5B3E91D3CD0C500A7BC7A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E5B3E81D3CD0C500A7BC7A /* ViewController.m */; };
@@ -24,6 +25,8 @@
 		81DEF0B91D3DB792005EE2E2 /* InputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputView.h; sourceTree = "<group>"; };
 		81DEF0BA1D3DB792005EE2E2 /* InputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputView.m; sourceTree = "<group>"; };
 		81DEF0BC1D3DB7A0005EE2E2 /* InputView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputView.xib; sourceTree = "<group>"; };
+		81DEF0C11D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBezierPath+ChatCellBackgroundPath.h"; sourceTree = "<group>"; };
+		81DEF0C21D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBezierPath+ChatCellBackgroundPath.m"; sourceTree = "<group>"; };
 		81E5B3DE1D3CD0C500A7BC7A /* drawRect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = drawRect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81E5B3E21D3CD0C500A7BC7A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		81E5B3E41D3CD0C500A7BC7A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -52,6 +55,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		81DEF0BE1D3DC7FF005EE2E2 /* ChatCell */ = {
+			isa = PBXGroup;
+			children = (
+				81E5B3F81D3CD0E900A7BC7A /* ChatCell.h */,
+				81E5B3F91D3CD0E900A7BC7A /* ChatCell.m */,
+				81DEF0C11D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.h */,
+				81DEF0C21D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.m */,
+				81E5B4011D3CDC8D00A7BC7A /* 1.jpg */,
+				81E5B3FE1D3CD30300A7BC7A /* UIImage+ClipImage.h */,
+				81E5B3FF1D3CD30300A7BC7A /* UIImage+ClipImage.m */,
+			);
+			name = ChatCell;
+			sourceTree = "<group>";
+		};
+		81DEF0BF1D3DC810005EE2E2 /* Chatdemo */ = {
+			isa = PBXGroup;
+			children = (
+				81E5B3E71D3CD0C500A7BC7A /* ViewController.h */,
+				81E5B3E81D3CD0C500A7BC7A /* ViewController.m */,
+				81DEF0B91D3DB792005EE2E2 /* InputView.h */,
+				81DEF0BA1D3DB792005EE2E2 /* InputView.m */,
+				81DEF0BC1D3DB7A0005EE2E2 /* InputView.xib */,
+			);
+			name = Chatdemo;
+			sourceTree = "<group>";
+		};
+		81DEF0C01D3DC82A005EE2E2 /* other */ = {
+			isa = PBXGroup;
+			children = (
+				81E5B3E41D3CD0C500A7BC7A /* AppDelegate.h */,
+				81E5B3E51D3CD0C500A7BC7A /* AppDelegate.m */,
+				81E5B3EA1D3CD0C500A7BC7A /* Main.storyboard */,
+				81E5B3ED1D3CD0C500A7BC7A /* Assets.xcassets */,
+				81E5B3EF1D3CD0C500A7BC7A /* LaunchScreen.storyboard */,
+				81E5B3F21D3CD0C500A7BC7A /* Info.plist */,
+			);
+			name = other;
+			sourceTree = "<group>";
+		};
 		81E5B3D51D3CD0C400A7BC7A = {
 			isa = PBXGroup;
 			children = (
@@ -71,22 +113,9 @@
 		81E5B3E01D3CD0C500A7BC7A /* drawRect */ = {
 			isa = PBXGroup;
 			children = (
-				81E5B3F81D3CD0E900A7BC7A /* ChatCell.h */,
-				81E5B3F91D3CD0E900A7BC7A /* ChatCell.m */,
-				81E5B4011D3CDC8D00A7BC7A /* 1.jpg */,
-				81E5B3FE1D3CD30300A7BC7A /* UIImage+ClipImage.h */,
-				81E5B3FF1D3CD30300A7BC7A /* UIImage+ClipImage.m */,
-				81E5B3E41D3CD0C500A7BC7A /* AppDelegate.h */,
-				81E5B3E51D3CD0C500A7BC7A /* AppDelegate.m */,
-				81E5B3E71D3CD0C500A7BC7A /* ViewController.h */,
-				81E5B3E81D3CD0C500A7BC7A /* ViewController.m */,
-				81DEF0B91D3DB792005EE2E2 /* InputView.h */,
-				81DEF0BA1D3DB792005EE2E2 /* InputView.m */,
-				81DEF0BC1D3DB7A0005EE2E2 /* InputView.xib */,
-				81E5B3EA1D3CD0C500A7BC7A /* Main.storyboard */,
-				81E5B3ED1D3CD0C500A7BC7A /* Assets.xcassets */,
-				81E5B3EF1D3CD0C500A7BC7A /* LaunchScreen.storyboard */,
-				81E5B3F21D3CD0C500A7BC7A /* Info.plist */,
+				81DEF0C01D3DC82A005EE2E2 /* other */,
+				81DEF0BF1D3DC810005EE2E2 /* Chatdemo */,
+				81DEF0BE1D3DC7FF005EE2E2 /* ChatCell */,
 				81E5B3E11D3CD0C500A7BC7A /* Supporting Files */,
 			);
 			path = drawRect;
@@ -178,6 +207,7 @@
 				81DEF0BB1D3DB792005EE2E2 /* InputView.m in Sources */,
 				81E5B3E31D3CD0C500A7BC7A /* main.m in Sources */,
 				81E5B4001D3CD30300A7BC7A /* UIImage+ClipImage.m in Sources */,
+				81DEF0C31D3DCB02005EE2E2 /* UIBezierPath+ChatCellBackgroundPath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

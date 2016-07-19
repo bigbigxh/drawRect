@@ -37,20 +37,21 @@ static NSString * const Identifier = @"ChatCell";
     }
     return _tableView;
 }
-
+#pragma mark - 数据源
 - (NSMutableArray *)dataArr{
     if (!_dataArr) {
-        NSArray *arr = @[@{@"img":@"1.jpg",@"msg":@"我不知道啊"},
-                     @{@"img":@"1.jpg",@"msg":@"输了不知道就是不知道。再比比直接弄死你信不信。不管你信不信，反正我是信了。我要写很多很多的东西，看看到底有没有用"},
-                     @{@"img":@"1.jpg",@"msg":@"输了不知道就是不知道。再"},
-                     @{@"img":@"1.jpg",@"msg":@"我不知道啊道就是不知道。再就是不知道。再"},
-                     @{@"img":@"1.jpg",@"msg":@"我不知道啊"}];
+        NSArray *arr = @[@{@"img":@"1.jpg",@"msg":@"我不知道啊",@"personType":@(PersonTypeMe)},
+                         @{@"img":@"1.jpg",@"msg":@"说了不知道就是不知道。再比比直接弄死你信不信。不管你信不信，反正我是信了。我要写很多很多的东西，看看到底有没有用",@"personType":@(PersonTypeOther)},
+                         @{@"img":@"1.jpg",@"msg":@"输了不知道就是不知道。再",@"personType":@(PersonTypeOther)},
+                         @{@"img":@"1.jpg",@"msg":@"我不知道啊道就是不知道。再就是不知道。再",@"personType":@(PersonTypeOther)},
+                         @{@"img":@"1.jpg",@"msg":@"我不知道啊",@"personType":@(PersonTypeMe)}];
         _dataArr = [NSMutableArray arrayWithArray:arr];
         
     }
     return _dataArr;
 }
 
+#pragma mark - 输入框
 - (InputView *)inputView{
     if (!_inputView) {
         
@@ -67,7 +68,7 @@ static NSString * const Identifier = @"ChatCell";
     return _inputView;
 }
 
-//发送消息
+#pragma mark - 发送消息
 - (void)sendMsg{
     
     NSString *msg = self.inputView.inputTextField.text;
@@ -78,7 +79,7 @@ static NSString * const Identifier = @"ChatCell";
         [controller addAction:action];
         [self presentViewController:controller animated:YES completion:nil];
     }else{
-        NSDictionary *dic = @{@"img":@"1.jpg",@"msg":msg};
+        NSDictionary *dic = @{@"img":@"1.jpg",@"msg":msg,@"personType":@(PersonTypeMe)};
         
         [self.dataArr addObject:dic];
         
@@ -89,7 +90,7 @@ static NSString * const Identifier = @"ChatCell";
     }
 }
 
-
+#pragma mark - ViewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"自定义ChatCell";
@@ -109,19 +110,24 @@ static NSString * const Identifier = @"ChatCell";
     
     ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:Identifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    cell.personType = PersonTypeMe;
     
     NSDictionary *dic = [self.dataArr objectAtIndex:indexPath.row];
     
     NSString *content = [dic valueForKey:@"msg"];
     NSString *imgName = [dic valueForKey:@"img"];
     UIImage *img = [UIImage imageNamed:imgName];
+    
+    NSNumber *type = [dic valueForKey:@"personType"];
+    
     cell.contentStr = content;
     cell.IconImage = img;
-    
+    cell.personType = [type integerValue];
     
     return cell;
 }
 
+#pragma mark - 根据string计算文本的高度，再根据文本的高度计算cell的高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary *dic = [self.dataArr objectAtIndex:indexPath.row];
@@ -220,7 +226,6 @@ static NSString * const Identifier = @"ChatCell";
     CGRect inputViewframe = self.inputView.frame;
     inputViewframe = CGRectMake(0, kheight - 44, kwidth, 44);
     self.inputView.frame = inputViewframe;
-    
     
     //让tableView滚动到最下方的那条消息
 //    NSInteger lastRow = self.dataArr.count;

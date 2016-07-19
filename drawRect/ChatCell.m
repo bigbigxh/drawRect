@@ -8,6 +8,7 @@
 
 #import "ChatCell.h"
 #import "UIImage+ClipImage.h"
+#import "UIBezierPath+ChatCellBackgroundPath.h"
 
 @implementation ChatCell
 
@@ -21,103 +22,64 @@
     // Configure the view for the selected state
 }
 
+#pragma mark - 重写drawRect方法，将头像、文字、以及文字后的背景画到cell上
 - (void)drawRect:(CGRect)rect{
-    
+//    由于此处用的是bezierPath，所以不需要获取layer上下文
 //    CGContextRef context = UIGraphicsGetCurrentContext();
     
-    UIImage *img = [UIImage imageWithClipImage:self.IconImage];
-    [img drawInRect:CGRectMake(10, 10, 30, 30)];
-    
+    //计算当文本(x=180,即文本的宽度超过180，默认换行。)的高度
     CGSize forHeight = CGSizeMake(180, MAXFLOAT);
-    NSInteger textHeight = [self MaxheightForRowWithText:self.contentStr AndFont:13 maskSize:forHeight];
-    
+    NSInteger textHeight = [self MaxheightForRowWithText:self.contentStr AndFont:14 maskSize:forHeight];
+    //计算文本不超过180时(一行)的宽度
     CGSize forWidth = CGSizeMake(MAXFLOAT, 20);
-    NSInteger textMaxWidth = [self MaxWidthWithText:self.contentStr AndFont:13 maskSize:forWidth];
+    NSInteger textMaxWidth = [self MaxWidthWithText:self.contentStr AndFont:14 maskSize:forWidth];
+    //调用UIImage的分类，将图片切成圆形。
+    UIImage *img = [UIImage imageWithClipImage:self.IconImage];
     
-    if (textMaxWidth > 180) {
-        UIBezierPath *path = [self MaxWidthbezierPathWithWidth:180 Height:textHeight];
-        [[UIColor grayColor]set];
-        [path fill];
-        NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]};
-        [self.contentStr drawInRect:CGRectMake(60, 15, 180, textHeight) withAttributes:dic];
-    }else{
-        UIBezierPath *path = [self MaxHeightbezierPathWithWidth:textMaxWidth];
+    if (self.personType == PersonTypeOther) {
+#pragma mark - 根据发送人 确定 头像、消息、消息背景 画在左边
         
-        [[UIColor grayColor]set];
-        [path fill];
-        NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]};
-        [self.contentStr drawInRect:CGRectMake(60, 18, textMaxWidth, 20) withAttributes:dic];
+        [img drawInRect:CGRectMake(10, 10, 30, 30)];
+        //根据width是否大于180而选择画一行还是多行
+        if (textMaxWidth > 180) {//画多行
+            UIBezierPath *path = [UIBezierPath bezierPathWithWidth:180 Height:textHeight];
+            [[UIColor grayColor]set];
+            [path fill];
+            NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]};
+            //string中还有个drawInPoint，只需设置起点。但无法换行
+            [self.contentStr drawInRect:CGRectMake(60, 15, 180, textHeight) withAttributes:dic];
+            
+        }else{//画一行
+            UIBezierPath *path = [UIBezierPath bezierPathWithWidth:textMaxWidth];
+            [[UIColor grayColor]set];
+            [path fill];
+            NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor blackColor]};
+            //string中还有个drawInPoint，只需设置起点。但无法换行
+            [self.contentStr drawInRect:CGRectMake(60, 18, textMaxWidth, 20) withAttributes:dic];
+        }
+    }else{
+#pragma mark - 根据发送人 确定 头像、消息、消息背景 画在右边
+        //计算屏幕的宽度
+        NSInteger hhhWidht = self.bounds.size.width;
+        [img drawInRect:CGRectMake(hhhWidht - 40, 10, 30, 30)];
+        
+        if (textMaxWidth > 180) {//画多行
+            UIBezierPath *path = [UIBezierPath bezierPathForPersonTypeMeWithHeight:textHeight andWindowWidth:hhhWidht];
+            [[UIColor cyanColor]set];
+            [path fill];
+            NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor whiteColor]};
+            [self.contentStr drawInRect:CGRectMake(hhhWidht - 230, 15, 180, textHeight) withAttributes:dic];
+        }else{//画一行
+            UIBezierPath *path = [UIBezierPath bezierPathForPersonTypeMeWithWidth:textMaxWidth andWindowWidth:hhhWidht];
+            [[UIColor cyanColor]set];
+            [path fill];
+            NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName:[UIColor whiteColor]};
+            [self.contentStr drawInRect:CGRectMake(hhhWidht - textMaxWidth - 55 , 17, textMaxWidth, 20) withAttributes:dic];
+        }
     }
-    
 }
 
-//如果输入的长度大于180的
-- (UIBezierPath *)MaxWidthbezierPathWithWidth:(NSInteger)textWidth Height:(NSInteger)textHeight{
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-//    [path moveToPoint:CGPointMake(55, 15)];
-    
-    [path addArcWithCenter:CGPointMake(55, 15) radius:5 startAngle:-M_PI endAngle:-M_PI_2 clockwise:YES];
-    
-    [path addLineToPoint:CGPointMake(235, 10)];
-    
-    [path addArcWithCenter:CGPointMake(235, 15) radius:5 startAngle:-M_PI_2 endAngle:0 clockwise:YES];
-    
-    NSInteger maxHeight = 10 + textHeight;
-    
-    
-    [path addLineToPoint:CGPointMake(240, maxHeight - 5)];
-    
-    [path addArcWithCenter:CGPointMake(235, maxHeight - 5) radius:5 startAngle:0 endAngle:M_PI_2 clockwise:YES];
-    
-    [path addLineToPoint:CGPointMake(55, maxHeight)];
-    
-    [path addArcWithCenter:CGPointMake(55, maxHeight - 5) radius:5 startAngle:M_PI_2 endAngle:M_PI clockwise:YES];
-    
-    [path addLineToPoint:CGPointMake(50, 24)];
-    [path addLineToPoint:CGPointMake(45, 22)];
-    [path addLineToPoint:CGPointMake(50, 20)];
-    [path addLineToPoint:CGPointMake(50, 10)];
-    
-    [[UIColor grayColor] set];
-//    [path fill];
-    
-    return path;
-}
-
-- (UIBezierPath *)MaxHeightbezierPathWithWidth:(NSInteger)textWidth{
-    
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    
-    NSLog(@"%ld",textWidth);
-    
-    [path moveToPoint:CGPointMake(50, 10)];
-    
-    [path addArcWithCenter:CGPointMake(55, 15) radius:5 startAngle:-M_PI endAngle:-M_PI_2 clockwise:YES];
-    
-     NSInteger maxWidth = 50 + textWidth + 15;
-    
-    [path addLineToPoint:CGPointMake(maxWidth - 5, 10)];
-    
-    [path addArcWithCenter:CGPointMake(maxWidth - 5, 15) radius:5 startAngle:-M_PI_2 endAngle:0 clockwise:YES];
-    
-    [path addLineToPoint:CGPointMake(maxWidth, 35)];
-    
-    [path addArcWithCenter:CGPointMake(maxWidth - 5, 35) radius:5 startAngle:0 endAngle:M_PI_2 clockwise:YES];
-    
-    [path addLineToPoint:CGPointMake(55, 40)];
-    
-    [path addArcWithCenter:CGPointMake(55, 35) radius:5 startAngle:M_PI_2 endAngle:M_PI clockwise:YES];
-    
-    
-    [path addLineToPoint:CGPointMake(50, 24)];
-    [path addLineToPoint:CGPointMake(45, 22)];
-    [path addLineToPoint:CGPointMake(50, 20)];
-    [path addLineToPoint:CGPointMake(50, 10)];
-
-    return path;
-}
-
+//计算高度
 - (NSInteger)MaxheightForRowWithText:(NSString *)rowText AndFont:(NSInteger)font maskSize:(CGSize)size{
     
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:font] forKey:NSFontAttributeName];
@@ -130,6 +92,7 @@
     return height;
 }
 
+//计算宽度
 - (NSInteger)MaxWidthWithText:(NSString *)rowText AndFont:(NSInteger)font maskSize:(CGSize)size{
     
     NSDictionary *dic = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13] forKey:NSFontAttributeName];
